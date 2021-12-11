@@ -17,6 +17,13 @@ struct Info {
     content: String,
 }
 
+#[get("/")]
+async fn readme() -> impl Responder {
+    HttpResponse::build(StatusCode::OK)
+        .content_type("text/html; charset=utf-8")
+        .body(include_str!("../templates/readme.html"))
+}
+
 #[get("/{token}")]
 async fn index(req: HttpRequest, web::Path(token): web::Path<String>) -> impl Responder {
     //format!("Hello {}! ", token)
@@ -49,13 +56,13 @@ async fn index(req: HttpRequest, web::Path(token): web::Path<String>) -> impl Re
 
 #[post("/{token}")]
 async fn save(web::Path(token): web::Path<String>, content: String) -> impl Responder {
-    local_cache::set(&token, &content);
+    let _ = local_cache::set(&token, &content);
     HttpResponse::Ok()
 }
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
-    HttpServer::new(|| App::new().service(index).service(save))
+    HttpServer::new(|| App::new().service(index).service(save).service(readme))
         .bind("127.0.0.1:3322")?
         .run()
         .await
