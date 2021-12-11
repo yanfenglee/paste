@@ -1,0 +1,46 @@
+<html>
+
+<head>
+    <style>
+        textarea {
+            /* position: fixed; */
+            width: 100%;
+            height: 100%;
+        }
+
+        .bgtext {
+            text-align: center;
+            opacity: 0.4; /*optional*/
+        }
+    </style>
+</head>
+
+<script>
+    function save(token) {
+        var x = document.getElementById("pastevalue").value;
+
+        httpRequest = new XMLHttpRequest();
+
+        httpRequest.open('POST', '/'+token);
+        httpRequest.setRequestHeader('Content-Type', 'application/json');
+        httpRequest.send(x);
+    }
+</script>
+
+<body>
+
+    <div class="bgtext">
+        云粘贴板的2种使用方法：
+        <br>
+        1. 浏览器输入 p.gluc.cn/xxx（xxx是自定义密码）粘贴需要复制的文本，在其他设备上浏览器打开同样地址
+        <br>
+        2. 在终端输入 curl p.gluc.cn/xxx -d 'some text', 在其他终端输入 curl p.gluc.cn/xxx, 获取 'some text'
+    </div>
+
+    <textarea id="pastevalue" oninput="save('{{token}}')">
+{{content}}
+    </textarea>
+
+</body>
+
+</html>
