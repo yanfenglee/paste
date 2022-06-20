@@ -63,7 +63,7 @@ async fn save(web::Path(token): web::Path<String>, content: String) -> impl Resp
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
     HttpServer::new(|| App::new().service(index).service(save).service(readme))
-        .bind("0.0.0.0:3322")?
+        .bind("0.0.0.0:90")?
         .run()
         .await
 }
